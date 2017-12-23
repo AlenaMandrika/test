@@ -10,7 +10,13 @@ class App extends Component {
       for (let y = 0; y < 100; y++) {
         for (let x = 0; x < 100; x++) {
           cells.push(
-            {x: x, y: y, color: 'black', value: '', size: '12px'}
+            {
+              x: x,
+              y: y,
+              color: 'black',
+              value: '',
+              size: '12px',
+              backgroundColor: ''}
           )
         }
       }
@@ -19,12 +25,14 @@ class App extends Component {
       cells = JSON.parse(window.localStorage.cells)
     }
 
+
     this.state = {
       cells: cells,
       focusElement: null,
     }
 
     this.changeColor = this.changeColor.bind(this)
+    this.changeBackgroundColor = this.changeBackgroundColor.bind(this)
     this.changeSize = this.changeSize.bind(this)
     this.focusElement = this.focusElement.bind(this)
     this.valueCange = this.valueCange.bind(this)
@@ -39,6 +47,21 @@ class App extends Component {
     cells.forEach((sell) => {
       if (sell.x === +coord[0] && sell.y === +coord[1]) {
         sell.color = color
+      }
+    })
+
+    this.setState({cells})
+    window.localStorage.cells = JSON.stringify(cells)
+  }
+
+  changeBackgroundColor (e) {
+    let backgroundColor = e.target.value
+    let cells = this.state.cells
+    let coord = this.state.focusElement.split('-')
+
+    cells.forEach((sell) => {
+      if (sell.x === +coord[0] && sell.y === +coord[1]) {
+        sell.backgroundColor = backgroundColor
       }
     })
 
@@ -82,44 +105,50 @@ class App extends Component {
 
   render () {
     return (
+
       <div className='table'>
         <div className="control-panel">
-          <select value='black' onChange={this.changeColor} name="color" id="color">
+          <p>font color</p>
+          <select className='select-block' onChange={this.changeColor} name="color">
             <option value="black">black</option>
             <option value="blue">blue</option>
             <option value="green">green</option>
             <option value="red">red</option>
+            <option value="gold">red</option>
           </select>
-          <select onChange={this.changeSize} name="size" id="size">
+          <p>font size</p>
+          <select className='select-block' onChange={this.changeSize} name="size">
             <option value='8px'>8</option>
             <option value='12px'>12</option>
+            <option value='12px'>18</option>
             <option value='24px'>24</option>
+            <option value='24px'>28</option>
           </select>
-          <button onClick={this.save}>save</button>
+          <p>background color</p>
+          <select className='select-block' onChange={this.changeBackgroundColor} name="backgroundColor">
+            <option value="white">white</option>
+            <option value="blue">blue</option>
+            <option value="green">green</option>
+            <option value="red">red</option>
+            <option value="gold">red</option>
+          </select>
         </div>
-        {this.state.cells.map((cell) => {
-          return <div key={cell.x + '-' + cell.y}
-                      className='cell'
-                      id={`${cell.x}-${cell.y}`}>
-            <input className='cell-input' value={cell.value}
-                   name={`${cell.x}-${cell.y}`}
-                   style={{color: cell.color, fontSize: cell.size}}
-                   onFocus={this.focusElement}
-                   onChange={this.valueCange}
-                   //placeholder={`${cell.x}-${cell.y}`}
-                   type="text"/>
-          </div>
-        })}
-        {/*<table id="nonFixedSample"  width="50%" border="0" cellpadding="0" cellspacing="0">*/}
-        {/*<tr>*/}
-        {/*<th>0</th>*/}
-        {/*<th>1</th>*/}
-        {/*</tr>*/}
-        {/*<tr>*/}
-        {/*<td>some1</td>*/}
-        {/*<td>some2</td>*/}
-        {/*</tr>*/}
-        {/*</table>*/}
+
+          {this.state.cells.map((cell) => {
+            return <div key={cell.x + '-' + cell.y}
+                        className='cell'
+                        id={cell.x + '-' + cell.y}>
+                    <input
+                     className='cell-input'
+                     value={cell.value}
+                     name={cell.x + '-' + cell.y}
+                     style={{color: cell.color, fontSize: cell.size, backgroundColor: cell.backgroundColor}}
+                     onFocus={this.focusElement}
+                     onChange={this.valueCange}
+                //placeholder={cell.x + '-' + cell.y}
+                     type="text"/>
+                   </div>
+          })}
       </div>
 
     )

@@ -1,3 +1,19 @@
+test
+
+Spreadsheets:
+1. Cols
+2. Rows
+3. Change font: size, color, background
+4. Resize
+5. Save in storage
+
+npm i
+
+npm start
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
